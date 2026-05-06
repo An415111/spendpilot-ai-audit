@@ -1,6 +1,9 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const AuditForm = () => {
+  const navigate = useNavigate();
+
   const [tool, setTool] = useState("");
   const [plan, setPlan] = useState("");
   const [monthlySpend, setMonthlySpend] = useState("");
@@ -20,17 +23,20 @@ const AuditForm = () => {
 
     console.log(auditData);
 
+    // Save to localStorage
     localStorage.setItem(
       "auditData",
       JSON.stringify(auditData)
     );
 
-    alert("Audit submitted successfully!");
+    // Redirect to results page
+    navigate("/results");
   };
 
   return (
     <div className="min-h-screen bg-black text-white px-6 py-16">
       <div className="max-w-3xl mx-auto bg-gray-900 border border-gray-800 rounded-2xl p-10">
+
         <h1 className="text-4xl font-bold mb-3">
           AI Spend Audit
         </h1>
@@ -50,7 +56,7 @@ const AuditForm = () => {
             <select
               value={tool}
               onChange={(e) => setTool(e.target.value)}
-              className="w-full bg-black border border-gray-700 rounded-xl px-4 py-3"
+              className="w-full bg-black border border-gray-700 rounded-xl px-4 py-3 outline-none focus:border-blue-500"
               required
             >
               <option value="">Select Tool</option>
@@ -73,7 +79,7 @@ const AuditForm = () => {
               placeholder="e.g. Team Plan"
               value={plan}
               onChange={(e) => setPlan(e.target.value)}
-              className="w-full bg-black border border-gray-700 rounded-xl px-4 py-3"
+              className="w-full bg-black border border-gray-700 rounded-xl px-4 py-3 outline-none focus:border-blue-500"
               required
             />
           </div>
@@ -89,7 +95,7 @@ const AuditForm = () => {
               placeholder="100"
               value={monthlySpend}
               onChange={(e) => setMonthlySpend(e.target.value)}
-              className="w-full bg-black border border-gray-700 rounded-xl px-4 py-3"
+              className="w-full bg-black border border-gray-700 rounded-xl px-4 py-3 outline-none focus:border-blue-500"
               required
             />
           </div>
@@ -105,7 +111,7 @@ const AuditForm = () => {
               placeholder="5"
               value={seats}
               onChange={(e) => setSeats(e.target.value)}
-              className="w-full bg-black border border-gray-700 rounded-xl px-4 py-3"
+              className="w-full bg-black border border-gray-700 rounded-xl px-4 py-3 outline-none focus:border-blue-500"
               required
             />
           </div>
@@ -119,7 +125,7 @@ const AuditForm = () => {
             <select
               value={useCase}
               onChange={(e) => setUseCase(e.target.value)}
-              className="w-full bg-black border border-gray-700 rounded-xl px-4 py-3"
+              className="w-full bg-black border border-gray-700 rounded-xl px-4 py-3 outline-none focus:border-blue-500"
               required
             >
               <option value="">Select Use Case</option>
@@ -137,6 +143,7 @@ const AuditForm = () => {
           >
             Generate Audit
           </button>
+
         </form>
       </div>
     </div>
