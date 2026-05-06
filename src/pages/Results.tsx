@@ -17,6 +17,14 @@ const Results = () => {
 
   const [loading, setLoading] = useState(true);
 
+  // Lead Form States
+  const [email, setEmail] = useState("");
+  const [company, setCompany] = useState("");
+  const [role, setRole] = useState("");
+  const [teamSize, setTeamSize] = useState("");
+  const [success, setSuccess] = useState(false);
+  const [saving, setSaving] = useState(false);
+
   // AI Summary Generation
   useEffect(() => {
 
@@ -69,6 +77,38 @@ const Results = () => {
     testSupabase();
 
   }, []);
+
+  // Save Lead
+  const saveLead = async () => {
+
+    setSaving(true);
+
+    const { error } = await supabase
+      .from("leads")
+      .insert([
+        {
+          email,
+          company,
+          role,
+          team_size: Number(teamSize),
+        },
+      ]);
+
+    setSaving(false);
+
+    if (error) {
+
+      console.error(error);
+
+      alert("Failed to save lead");
+
+      return;
+    }
+
+    setSuccess(true);
+
+    console.log("Lead saved successfully");
+  };
 
   if (!auditData) {
     return (
@@ -208,6 +248,72 @@ const Results = () => {
               ${result.annualSavings}
             </h3>
           </div>
+
+        </div>
+
+        {/* Lead Capture Form */}
+        <div className="bg-gray-900 border border-gray-800 rounded-2xl p-8 mb-10">
+
+          <h2 className="text-3xl font-bold mb-3">
+            Get Full Savings Report
+          </h2>
+
+          <p className="text-gray-400 mb-8">
+            Receive a detailed AI cost optimization report from SpendPilot.
+          </p>
+
+          {success ? (
+
+            <div className="bg-green-600/20 border border-green-500 rounded-xl p-4 text-green-300">
+              Lead saved successfully. Our team will contact you soon.
+            </div>
+
+          ) : (
+
+            <div className="space-y-5">
+
+              <input
+                type="email"
+                placeholder="Work Email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="w-full bg-black border border-gray-700 rounded-xl px-4 py-3"
+              />
+
+              <input
+                type="text"
+                placeholder="Company Name"
+                value={company}
+                onChange={(e) => setCompany(e.target.value)}
+                className="w-full bg-black border border-gray-700 rounded-xl px-4 py-3"
+              />
+
+              <input
+                type="text"
+                placeholder="Your Role"
+                value={role}
+                onChange={(e) => setRole(e.target.value)}
+                className="w-full bg-black border border-gray-700 rounded-xl px-4 py-3"
+              />
+
+              <input
+                type="number"
+                placeholder="Team Size"
+                value={teamSize}
+                onChange={(e) => setTeamSize(e.target.value)}
+                className="w-full bg-black border border-gray-700 rounded-xl px-4 py-3"
+              />
+
+              <button
+                onClick={saveLead}
+                disabled={saving}
+                className="w-full bg-blue-600 hover:bg-blue-700 py-4 rounded-xl font-semibold transition disabled:opacity-50"
+              >
+                {saving ? "Saving..." : "Save Report"}
+              </button>
+
+            </div>
+          )}
 
         </div>
 
