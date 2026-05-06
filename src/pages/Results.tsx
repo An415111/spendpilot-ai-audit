@@ -1,3 +1,5 @@
+import { useEffect, useState } from "react";
+import axios from "axios";
 import { runAudit } from "../utils/auditEngine";
 
 const Results = () => {
@@ -7,6 +9,46 @@ const Results = () => {
   const auditData = storedData
     ? JSON.parse(storedData)
     : null;
+
+  const [summary, setSummary] = useState(
+    "Generating AI financial summary..."
+  );
+
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+
+    const generateSummary = async () => {
+
+      try {
+
+        const response = await axios.post(
+          "http://localhost:5000/generate-summary",
+          auditData
+        );
+
+        setSummary(response.data.summary);
+
+      } catch (error) {
+
+        console.error(error);
+
+        setSummary(
+          "Unable to generate AI summary at this time."
+        );
+
+      } finally {
+
+        setLoading(false);
+
+      }
+    };
+
+    if (auditData) {
+      generateSummary();
+    }
+
+  }, []);
 
   if (!auditData) {
     return (
@@ -34,7 +76,7 @@ const Results = () => {
           </p>
         </div>
 
-        {/* Hero Savings Card */}
+        {/* Hero Card */}
         <div className="bg-gradient-to-r from-blue-700 to-blue-500 rounded-3xl p-10 mb-10">
 
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
@@ -68,10 +110,33 @@ const Results = () => {
           </div>
         </div>
 
+        {/* AI Summary */}
+        <div className="bg-gray-900 border border-gray-800 rounded-2xl p-8 mb-8">
+
+          <div className="flex items-center justify-between mb-5">
+
+            <h2 className="text-3xl font-bold">
+              AI Financial Summary
+            </h2>
+
+            {loading && (
+              <span className="text-blue-400 text-sm">
+                Generating...
+              </span>
+            )}
+
+          </div>
+
+          <p className="text-gray-300 leading-relaxed text-lg">
+            {summary}
+          </p>
+        </div>
+
         {/* Recommendation */}
         <div className="bg-gray-900 border border-gray-800 rounded-2xl p-8 mb-8">
 
           <div className="flex items-center justify-between mb-6">
+
             <h2 className="text-3xl font-bold">
               Recommendation
             </h2>
@@ -79,6 +144,7 @@ const Results = () => {
             <span className="bg-blue-600 px-4 py-2 rounded-full text-sm font-medium">
               {result.confidence} Confidence
             </span>
+
           </div>
 
           <p className="text-2xl text-blue-400 font-semibold mb-4">
@@ -93,7 +159,6 @@ const Results = () => {
         {/* Spend Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
 
-          {/* Current Spend */}
           <div className="bg-gray-900 border border-gray-800 rounded-2xl p-8">
             <p className="text-gray-400 mb-3">
               Current Spend
@@ -104,7 +169,6 @@ const Results = () => {
             </h3>
           </div>
 
-          {/* Optimized Spend */}
           <div className="bg-gray-900 border border-gray-800 rounded-2xl p-8">
             <p className="text-gray-400 mb-3">
               Optimized Spend
@@ -115,7 +179,6 @@ const Results = () => {
             </h3>
           </div>
 
-          {/* Annual Savings */}
           <div className="bg-gray-900 border border-gray-800 rounded-2xl p-8">
             <p className="text-gray-400 mb-3">
               Annual Savings
@@ -144,6 +207,7 @@ const Results = () => {
             <button className="bg-blue-600 hover:bg-blue-700 px-8 py-4 rounded-xl font-semibold transition">
               Book Consultation
             </button>
+
           </div>
         )}
 
