@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { pricingData } from "../data/pricingData";
 
 const AuditForm = () => {
   const navigate = useNavigate();
@@ -29,7 +30,7 @@ const AuditForm = () => {
       JSON.stringify(auditData)
     );
 
-    // Redirect to results page
+    // Navigate to results page
     navigate("/results");
   };
 
@@ -45,7 +46,10 @@ const AuditForm = () => {
           Analyze your AI stack and discover optimization opportunities.
         </p>
 
-        <form onSubmit={handleSubmit} className="space-y-6">
+        <form
+          onSubmit={handleSubmit}
+          className="space-y-6"
+        >
 
           {/* Tool */}
           <div>
@@ -55,16 +59,34 @@ const AuditForm = () => {
 
             <select
               value={tool}
-              onChange={(e) => setTool(e.target.value)}
+              onChange={(e) => {
+                setTool(e.target.value);
+                setPlan("");
+              }}
               className="w-full bg-black border border-gray-700 rounded-xl px-4 py-3 outline-none focus:border-blue-500"
               required
             >
               <option value="">Select Tool</option>
-              <option value="ChatGPT">ChatGPT</option>
-              <option value="Claude">Claude</option>
-              <option value="Cursor">Cursor</option>
-              <option value="Copilot">GitHub Copilot</option>
-              <option value="Gemini">Gemini</option>
+
+              <option value="ChatGPT">
+                ChatGPT
+              </option>
+
+              <option value="Claude">
+                Claude
+              </option>
+
+              <option value="Cursor">
+                Cursor
+              </option>
+
+              <option value="Copilot">
+                GitHub Copilot
+              </option>
+
+              <option value="Gemini">
+                Gemini
+              </option>
             </select>
           </div>
 
@@ -74,14 +96,32 @@ const AuditForm = () => {
               Current Plan
             </label>
 
-            <input
-              type="text"
-              placeholder="e.g. Team Plan"
+            <select
               value={plan}
               onChange={(e) => setPlan(e.target.value)}
               className="w-full bg-black border border-gray-700 rounded-xl px-4 py-3 outline-none focus:border-blue-500"
               required
-            />
+              disabled={!tool}
+            >
+              <option value="">
+                {tool
+                  ? "Select Plan"
+                  : "Select Tool First"}
+              </option>
+
+              {tool &&
+                pricingData[
+                  tool as keyof typeof pricingData
+                ]?.plans.map((planOption) => (
+                  <option
+                    key={planOption.name}
+                    value={planOption.name}
+                  >
+                    {planOption.name} — $
+                    {planOption.price}/mo
+                  </option>
+                ))}
+            </select>
           </div>
 
           {/* Monthly Spend */}
@@ -94,7 +134,9 @@ const AuditForm = () => {
               type="number"
               placeholder="100"
               value={monthlySpend}
-              onChange={(e) => setMonthlySpend(e.target.value)}
+              onChange={(e) =>
+                setMonthlySpend(e.target.value)
+              }
               className="w-full bg-black border border-gray-700 rounded-xl px-4 py-3 outline-none focus:border-blue-500"
               required
             />
@@ -110,7 +152,9 @@ const AuditForm = () => {
               type="number"
               placeholder="5"
               value={seats}
-              onChange={(e) => setSeats(e.target.value)}
+              onChange={(e) =>
+                setSeats(e.target.value)
+              }
               className="w-full bg-black border border-gray-700 rounded-xl px-4 py-3 outline-none focus:border-blue-500"
               required
             />
@@ -124,19 +168,39 @@ const AuditForm = () => {
 
             <select
               value={useCase}
-              onChange={(e) => setUseCase(e.target.value)}
+              onChange={(e) =>
+                setUseCase(e.target.value)
+              }
               className="w-full bg-black border border-gray-700 rounded-xl px-4 py-3 outline-none focus:border-blue-500"
               required
             >
-              <option value="">Select Use Case</option>
-              <option value="Coding">Coding</option>
-              <option value="Writing">Writing</option>
-              <option value="Research">Research</option>
-              <option value="Data Analysis">Data Analysis</option>
-              <option value="Mixed">Mixed</option>
+              <option value="">
+                Select Use Case
+              </option>
+
+              <option value="Coding">
+                Coding
+              </option>
+
+              <option value="Writing">
+                Writing
+              </option>
+
+              <option value="Research">
+                Research
+              </option>
+
+              <option value="Data Analysis">
+                Data Analysis
+              </option>
+
+              <option value="Mixed">
+                Mixed
+              </option>
             </select>
           </div>
 
+          {/* Submit Button */}
           <button
             type="submit"
             className="w-full bg-blue-600 hover:bg-blue-700 py-4 rounded-xl font-semibold text-lg transition"
