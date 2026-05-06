@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { runAudit } from "../utils/auditEngine";
+import { supabase } from "../lib/supabase";
 
 const Results = () => {
 
@@ -16,6 +17,7 @@ const Results = () => {
 
   const [loading, setLoading] = useState(true);
 
+  // AI Summary Generation
   useEffect(() => {
 
     const generateSummary = async () => {
@@ -47,6 +49,24 @@ const Results = () => {
     if (auditData) {
       generateSummary();
     }
+
+  }, []);
+
+  // Supabase Test Connection
+  useEffect(() => {
+
+    const testSupabase = async () => {
+
+      const { data, error } = await supabase
+        .from("leads")
+        .select("*");
+
+      console.log("SUPABASE DATA:", data);
+
+      console.log("SUPABASE ERROR:", error);
+    };
+
+    testSupabase();
 
   }, []);
 
