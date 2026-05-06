@@ -33,7 +33,7 @@ const Results = () => {
       try {
 
         const response = await axios.post(
-          "http://localhost:5000/generate-summary",
+          "https://spendpilot-backend.onrender.com/generate-summary",
           auditData
         );
 
