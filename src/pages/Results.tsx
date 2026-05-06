@@ -20,59 +20,133 @@ const Results = () => {
 
   return (
     <div className="min-h-screen bg-black text-white px-6 py-16">
-      <div className="max-w-4xl mx-auto">
 
-        {/* Hero Card */}
-        <div className="bg-gradient-to-r from-blue-700 to-blue-500 rounded-3xl p-10 mb-10">
-          <h1 className="text-5xl font-bold mb-4">
-            ${result.monthlySavings}/mo Saved
+      <div className="max-w-5xl mx-auto">
+
+        {/* Header */}
+        <div className="mb-10">
+          <h1 className="text-5xl font-bold mb-3">
+            Audit Results
           </h1>
 
-          <p className="text-xl text-blue-100">
-            Estimated annual savings:
-            {" "}
-            ${result.annualSavings}
+          <p className="text-gray-400 text-lg">
+            Financial optimization insights for your AI stack.
           </p>
         </div>
 
-        {/* Recommendation Card */}
-        <div className="bg-gray-900 border border-gray-800 rounded-2xl p-8 mb-6">
-          <h2 className="text-2xl font-bold mb-4">
-            Recommendation
-          </h2>
+        {/* Hero Savings Card */}
+        <div className="bg-gradient-to-r from-blue-700 to-blue-500 rounded-3xl p-10 mb-10">
 
-          <p className="text-lg text-blue-400 mb-3">
+          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+
+            <div>
+              <p className="text-blue-100 mb-2">
+                Estimated Monthly Savings
+              </p>
+
+              <h2 className="text-6xl font-bold">
+                ${result.monthlySavings}
+              </h2>
+
+              <p className="text-blue-100 mt-4 text-lg">
+                Annual Savings:
+                {" "}
+                ${result.annualSavings}
+              </p>
+            </div>
+
+            <div className="bg-white/10 backdrop-blur-md rounded-2xl px-6 py-4">
+              <p className="text-sm text-blue-100 mb-1">
+                Audit Status
+              </p>
+
+              <h3 className="text-2xl font-bold">
+                {result.status}
+              </h3>
+            </div>
+
+          </div>
+        </div>
+
+        {/* Recommendation */}
+        <div className="bg-gray-900 border border-gray-800 rounded-2xl p-8 mb-8">
+
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="text-3xl font-bold">
+              Recommendation
+            </h2>
+
+            <span className="bg-blue-600 px-4 py-2 rounded-full text-sm font-medium">
+              {result.confidence} Confidence
+            </span>
+          </div>
+
+          <p className="text-2xl text-blue-400 font-semibold mb-4">
             {result.recommendation}
           </p>
 
-          <p className="text-gray-400">
+          <p className="text-gray-400 text-lg leading-relaxed">
             {result.reason}
           </p>
         </div>
 
-        {/* Spend Breakdown */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {/* Spend Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
 
+          {/* Current Spend */}
           <div className="bg-gray-900 border border-gray-800 rounded-2xl p-8">
-            <h3 className="text-gray-400 mb-2">
+            <p className="text-gray-400 mb-3">
               Current Spend
-            </h3>
+            </p>
 
-            <p className="text-4xl font-bold">
+            <h3 className="text-5xl font-bold">
               ${result.currentSpend}
-            </p>
-          </div>
-
-          <div className="bg-gray-900 border border-gray-800 rounded-2xl p-8">
-            <h3 className="text-gray-400 mb-2">
-              Optimized Spend
             </h3>
-
-            <p className="text-4xl font-bold text-green-400">
-              ${result.optimizedSpend}
-            </p>
           </div>
+
+          {/* Optimized Spend */}
+          <div className="bg-gray-900 border border-gray-800 rounded-2xl p-8">
+            <p className="text-gray-400 mb-3">
+              Optimized Spend
+            </p>
+
+            <h3 className="text-5xl font-bold text-green-400">
+              ${result.optimizedSpend}
+            </h3>
+          </div>
+
+          {/* Annual Savings */}
+          <div className="bg-gray-900 border border-gray-800 rounded-2xl p-8">
+            <p className="text-gray-400 mb-3">
+              Annual Savings
+            </p>
+
+            <h3 className="text-5xl font-bold text-blue-400">
+              ${result.annualSavings}
+            </h3>
+          </div>
+
         </div>
+
+        {/* Credex CTA */}
+        {result.monthlySavings >= 500 && (
+          <div className="bg-blue-950 border border-blue-800 rounded-2xl p-8">
+
+            <h2 className="text-3xl font-bold mb-4">
+              Unlock More Savings With Credex
+            </h2>
+
+            <p className="text-blue-100 text-lg mb-6">
+              Your audit indicates significant overspending opportunities.
+              Credex can help your team access discounted AI infrastructure credits.
+            </p>
+
+            <button className="bg-blue-600 hover:bg-blue-700 px-8 py-4 rounded-xl font-semibold transition">
+              Book Consultation
+            </button>
+          </div>
+        )}
+
       </div>
     </div>
   );
